@@ -158,7 +158,7 @@ body {
 }
 
 .slogan {
-  margin: 0.72rem 0 0;
+  margin: 0.55rem 0 0;
   font-family: var(--display);
   font-weight: 560;
   font-size: clamp(1.45rem, 2.4vw, 1.9rem);
@@ -221,8 +221,10 @@ main {
 }
 
 .brand .rule {
-  width: 10.5rem;
-  margin-top: 0.65rem;
+  width: 11.25rem;
+  height: 2px;
+  margin-top: 0.42rem;
+  background: var(--ink);
 }
 
 .constellation {
@@ -230,17 +232,17 @@ main {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 3.4rem;
-  width: min(100%, 40rem);
-  margin: 2.6rem 1% 0.4rem auto;
-  min-height: 21rem;
+  gap: 2.5rem;
+  width: min(100%, 34rem);
+  margin: 1.5rem 0 0.2rem auto;
+  min-height: 18.5rem;
 }
 
 .topic-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 button.topic {
@@ -278,30 +280,31 @@ button.topic {
 }
 
 .topic-featured .bubble {
-  width: 9.5rem;
-  height: 9.5rem;
+  width: 10.25rem;
+  height: 10.25rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 0.2rem;
 }
 
 .topic-side .bubble {
-  width: 5.65rem;
-  height: 5.65rem;
+  width: 5.45rem;
+  height: 5.45rem;
 }
 
-.bubble svg {
+.topic-icon {
   display: block;
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  pointer-events: none;
 }
 
-.topic-featured .bubble svg {
-  width: 2.3rem;
-  height: 2.3rem;
-}
-
-.topic-side .bubble svg {
-  width: 2.85rem;
-  height: 2.85rem;
+.topic-featured .topic-icon {
+  width: 2.45rem;
+  height: 2.45rem;
 }
 
 .bubble::after {
@@ -349,13 +352,72 @@ button.topic {
 
 .topic.is-active:hover .bubble,
 .topic.is-active:focus-visible .bubble,
-.topic.is-selected .bubble {
+.topic.is-selected .bubble,
+.topic-featured .bubble {
   background: var(--ink);
   color: var(--paper);
+  border-style: solid;
   border-color: var(--ink);
   box-shadow:
     0 0 0 5px var(--paper),
     0 0 0 7px rgba(154, 52, 18, 0.55);
+}
+
+.topic.topic-featured .bubble {
+  color: var(--paper);
+  border-style: solid;
+  border-color: var(--ink);
+}
+
+.topic.topic-featured .topic-label {
+  color: var(--paper);
+}
+
+.topic.is-selected .topic-label,
+.topic.is-active:hover .bubble .topic-label,
+.topic.is-active:focus-visible .bubble .topic-label {
+  color: var(--paper);
+}
+
+.topic-featured .topic-icon,
+.topic.is-selected .topic-icon,
+.topic.is-active:hover .topic-icon,
+.topic.is-active:focus-visible .topic-icon {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+.constellation.is-choosing .topic-featured:not(.is-selected) .bubble {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.constellation.is-choosing .topic-featured.is-active:not(.is-selected) .bubble {
+  border-style: solid;
+  border-color: var(--ink);
+}
+
+.constellation.is-choosing .topic-featured.is-idle:not(.is-selected) .bubble {
+  border-style: dashed;
+  border-color: var(--idle);
+  color: rgba(27, 22, 18, 0.45);
+}
+
+.constellation.is-choosing .topic-featured.is-idle:not(.is-selected) .topic-label {
+  color: rgba(27, 22, 18, 0.5);
+}
+
+.constellation.is-choosing .topic-featured:not(.is-selected):not(:hover):not(:focus-visible) .topic-icon {
+  filter: none;
+}
+
+.constellation.is-choosing .topic-featured.is-idle:not(.is-selected) .topic-icon {
+  opacity: 0.8;
+}
+
+.topic.is-idle:not(.topic-featured) .topic-icon {
+  opacity: 0.82;
 }
 
 .topics-soon {
@@ -496,6 +558,7 @@ button.topic {
 
 .post-name {
   display: block;
+  overflow-wrap: break-word;
   font-family: var(--display);
   font-size: clamp(1.45rem, 2.2vw, 1.85rem);
   font-weight: 560;
@@ -515,6 +578,7 @@ button.topic {
   margin-top: 0.45rem;
   font-size: 1.05rem;
   line-height: 1.45;
+  overflow-wrap: break-word;
 }
 
 .post-foot {
@@ -674,10 +738,11 @@ main a {
   place-items: center;
 }
 
-.social-slot svg {
+.social-slot img {
   display: block;
-  width: 1.7rem;
-  height: 1.7rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  opacity: 0.72;
 }
 
 .social-sep {
@@ -730,19 +795,64 @@ main a {
     margin-bottom: 0.35rem;
   }
 
+  .site-header nav {
+    align-items: center;
+  }
+
+  .site-header nav a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.3rem 0.45rem 0.15rem;
+  }
+
+  .nav-sep {
+    margin-top: 0;
+  }
+
   .constellation {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
-    margin: 2rem auto 0;
+    margin: 1.35rem auto 0;
     min-height: 0;
-    gap: 1.6rem;
+    gap: 1.15rem;
   }
 
   .topic-featured .bubble {
-    width: 8.25rem;
-    height: 8.25rem;
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .topic-featured .topic-icon {
+    width: 2.05rem;
+    height: 2.05rem;
+  }
+
+  .topic-stack {
+    width: min(100%, 19.5rem);
+    align-items: stretch;
+    gap: 0.15rem;
+  }
+
+  .topic-side {
+    min-height: 4.75rem;
+    padding: 0.35rem 0.1rem;
+    gap: 0.9rem;
+  }
+
+  .topic-side .bubble {
+    width: 4.35rem;
+    height: 4.35rem;
+  }
+
+  .legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.2rem;
   }
 
   .post-grid {
@@ -775,7 +885,32 @@ main a {
   }
 
   .brand h1 {
-    font-size: clamp(2.7rem, 14vw, 3.6rem);
+    font-size: clamp(2.3rem, 11.5vw, 3.4rem);
+  }
+
+  .slogan {
+    font-size: clamp(1.2rem, 5.4vw, 1.55rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .footer-bar {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .post-card a,
+  .post-card:nth-child(even) a {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .post-name {
+    font-size: 1.28rem;
+  }
+
+  .post-excerpt {
+    font-size: 0.98rem;
   }
 }
 
@@ -797,7 +932,7 @@ main a {
     animation: bob var(--bob, 8.4s) ease-in-out var(--bob-delay, 0s) infinite;
   }
 
-  .topic.is-active:not(:hover):not(:focus-visible):not(.is-selected) .bubble::after {
+  .topic.is-active:not(.topic-featured):not(:hover):not(:focus-visible):not(.is-selected) .bubble::after {
     animation: topic-pulse 5.4s ease-in-out infinite;
   }
 }

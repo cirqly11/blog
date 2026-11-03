@@ -26,22 +26,14 @@
 {%- endif -%}
   {%- if topic.placement == "featured" -%}
   <span class="bubble">
-    {%- if topic.icon == "house" -%}{% include icons/house.html %}
-    {%- elsif topic.icon == "car" -%}{% include icons/car.html %}
-    {%- elsif topic.icon == "sun" -%}{% include icons/sun.html %}
-    {%- elsif topic.icon == "brain" -%}{% include icons/brain.html %}
-    {%- endif -%}
+    <img class="topic-icon" src="{{ topic.icon | prepend: '/assets/icons/' | append: '.svg' | prepend: site.baseurl }}" alt="" width="64" height="64" decoding="async">
     <span class="topic-label">
       {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
     </span>
   </span>
   {%- else -%}
   <span class="bubble">
-    {%- if topic.icon == "house" -%}{% include icons/house.html %}
-    {%- elsif topic.icon == "car" -%}{% include icons/car.html %}
-    {%- elsif topic.icon == "sun" -%}{% include icons/sun.html %}
-    {%- elsif topic.icon == "brain" -%}{% include icons/brain.html %}
-    {%- endif -%}
+    <img class="topic-icon" src="{{ topic.icon | prepend: '/assets/icons/' | append: '.svg' | prepend: site.baseurl }}" alt="" width="64" height="64" decoding="async">
   </span>
   <span class="topic-label">
     {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
