@@ -440,7 +440,7 @@ main a {
   display: block;
   width: 100%;
   height: auto;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .robot .shape {
@@ -475,8 +475,45 @@ main a {
   stroke: none;
 }
 
-.robot .arm-still {
-  display: none;
+.robot .pivot-pad {
+  fill: transparent;
+  stroke: none;
+}
+
+.robot .wave-shoulder,
+.robot .wave-elbow {
+  transform-box: fill-box;
+  animation-duration: 3.2s;
+  animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 1);
+  animation-iteration-count: infinite;
+}
+
+.robot .wave-shoulder {
+  transform-origin: 50% 50%;
+  transform: rotate(10deg);
+  animation-name: robot-shoulder;
+}
+
+.robot .wave-elbow {
+  transform-origin: 50% 100%;
+  transform: rotate(42deg);
+  animation-name: robot-elbow;
+}
+
+@keyframes robot-shoulder {
+  0%, 100% { transform: rotate(14deg); }
+  18% { transform: rotate(22deg); }
+  36% { transform: rotate(8deg); }
+  52% { transform: rotate(12deg); }
+  70% { transform: rotate(16deg); }
+}
+
+@keyframes robot-elbow {
+  0%, 100% { transform: rotate(24deg); }
+  18% { transform: rotate(-20deg); }
+  36% { transform: rotate(46deg); }
+  52% { transform: rotate(38deg); }
+  70% { transform: rotate(22deg); }
 }
 
 @media (max-width: 640px) {
@@ -505,12 +542,9 @@ main a {
     transition: none;
   }
 
-  .robot .arm-live {
-    display: none;
-  }
-
-  .robot .arm-still {
-    display: inline;
+  .robot .wave-shoulder,
+  .robot .wave-elbow {
+    animation: none;
   }
 }
 
