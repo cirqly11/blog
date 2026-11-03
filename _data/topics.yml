@@ -1,0 +1,46 @@
+# Canonical keys are matched against categories and tags (case, spaces, and slashes ignored).
+- slug: smart-home
+  name: Smart Home
+  lines:
+    - Smart
+    - Home
+  keys:
+    - smart-home
+    - smarthome
+    - smart home
+
+- slug: e-auto
+  name: E-Auto / Wallbox
+  lines:
+    - E-Auto
+    - Wallbox
+  keys:
+    - e-auto
+    - e-auto-wallbox
+    - e auto
+    - wallbox
+    - e-auto / wallbox
+
+- slug: pv
+  name: PV / Energie
+  lines:
+    - PV
+    - Energie
+  keys:
+    - pv
+    - pv-energie
+    - photovoltaik
+    - energie
+    - solar
+    - pv / energie
+
+- slug: ki
+  name: KI
+  lines:
+    - KI
+  keys:
+    - ki
+    - ai
+    - künstliche intelligenz
+    - kuenstliche intelligenz
+    - künstliche-intelligenz

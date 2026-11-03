@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: 'en' }}">
+<html lang="{{ page.lang | default: site.lang | default: 'de' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | prepend: site.baseurl }}">
 </head>
 <body>
-  <a class="skip" href="#content">Skip to content</a>
+  <a class="skip" href="#content">Zum Inhalt</a>
   <div class="topbar" aria-hidden="true"></div>
   <div class="read-progress" hidden aria-hidden="true"></div>
   <div class="shell">
@@ -40,11 +40,25 @@
     </main>
     <footer class="site-footer">
       <p>{{ site.author }}</p>
+      <div class="social-slots">
+        <span class="social-slot" role="img" aria-label="X, noch ohne Adresse">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M14.7 10.29 21.45 2.5h-1.6l-5.86 6.76L9.2 2.5H2.7l7.1 10.3L2.7 21.5h1.6l6.21-7.17 4.96 7.17h6.5l-7.27-11.21Zm-2.2 2.54-.72-1.03-5.73-8.2h2.46l4.62 6.61.72 1.03 6.01 8.6h-2.46l-4.9-7.01Z"/>
+          </svg>
+        </span>
+        <span class="social-slot" role="img" aria-label="Instagram, noch ohne Adresse">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="3.4" y="3.4" width="17.2" height="17.2" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            <circle cx="12" cy="12" r="4.05" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            <circle cx="17.35" cy="6.7" r="1.05" fill="currentColor"/>
+          </svg>
+        </span>
+      </div>
     </footer>
   </div>
   <noscript>
     <style>
-      .hero-copy, .post-card, .reveal, .mark span, .rule { opacity: 1 !important; transform: none !important; }
+      .hero-copy, .post-card, .reveal, .rule { opacity: 1 !important; }
     </style>
   </noscript>
   <script type="module" src="{{ '/assets/js/site.js' | prepend: site.baseurl }}"></script>
