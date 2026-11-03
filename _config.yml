@@ -1,0 +1,16 @@
+title: "Julian's Blog"
+author: "Julian Kreis"
+url: "https://cirqly11.github.io"
+baseurl: "/blog"
+permalink: pretty
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+exclude:
+  - README.md
+  - vendor
