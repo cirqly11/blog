@@ -1,5 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="4" y="4" width="24" height="24" rx="6"/>
-  <circle cx="16" cy="16" r="5" fill="none"/>
-  <circle cx="22.5" cy="9.5" r="1.4" fill="currentColor" stroke="none"/>
+<!-- Tabler Icons, MIT. Upstream file: icons/outline/brand-instagram.svg -->
+<!--
+tags: [instagram, ig, meta, social, social-media, photos, stories, reels, logo, brand]
+category: Brand
+version: "1.9"
+unicode: "ec20"
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10" />
+  <path d="M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0 -7 0" />
+  <path d="M17 7v.01" />
 </svg>

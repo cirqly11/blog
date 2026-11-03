@@ -1,4 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="4" y="4" width="24" height="24"/>
-  <path d="M11 11l10 10M21 11L11 21"/>
+<!-- Tabler Icons, MIT. Upstream file: icons/outline/brand-x.svg -->
+<!--
+tags: [x, twitter, tweet, social, social-media, microblog, logo, brand]
+category: Brand
+version: "2.29"
+unicode: "fc0f"
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 4l11.733 16h4.267l-11.733 -16l-4.267 0" />
+  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
 </svg>
