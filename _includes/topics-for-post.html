@@ -1,0 +1,24 @@
+{%- assign ns = "" -%}
+{%- assign entry = include.post -%}
+{%- for topic in site.data.topics -%}
+  {%- assign hit = false -%}
+  {%- for key in topic.keys -%}
+    {%- assign needle = key | downcase | strip | replace: " / ", "-" | replace: "/", "-" | replace: " ", "-" -%}
+    {%- for cat in entry.categories -%}
+      {%- assign hay = cat | downcase | strip | replace: " / ", "-" | replace: "/", "-" | replace: " ", "-" -%}
+      {%- if hay == needle -%}
+        {%- assign hit = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- for tag in entry.tags -%}
+      {%- assign hay = tag | downcase | strip | replace: " / ", "-" | replace: "/", "-" | replace: " ", "-" -%}
+      {%- if hay == needle -%}
+        {%- assign hit = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {%- if hit -%}
+    {%- assign ns = ns | append: topic.slug | append: " " -%}
+  {%- endif -%}
+{%- endfor -%}
+{{- ns | strip -}}

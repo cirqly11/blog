@@ -7,25 +7,56 @@ title: Home
     <span class="frame"></span>
   </div>
   <div class="hero-copy">
-    <p class="kicker">{{ site.author }}</p>
     <h1>{{ site.title }}</h1>
+    {% if site.tagline %}
+    <p class="slogan">{{ site.tagline }}</p>
+    {% endif %}
     <span class="rule" aria-hidden="true"></span>
   </div>
-  <div class="mark" aria-hidden="true">
-    {% for i in (1..18) %}
-    <span></span>
-    {% endfor %}
-  </div>
 </section>
-<ul class="posts">
-  {% for post in site.posts %}
-  <li class="post-card">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-      <span class="post-index" aria-hidden="true">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
-      <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%-d %b %Y" }}</time>
-      <span class="post-name">{{ post.title }}</span>
-      <span class="arrow" aria-hidden="true">→</span>
-    </a>
-  </li>
-  {% endfor %}
-</ul>
+
+<nav class="topics" aria-label="Themen">
+  <ul>
+    {%- for topic in site.data.topics -%}
+    {%- assign topic_count = 0 -%}
+    {%- for post in site.posts -%}
+      {%- capture post_slugs -%}{% include topics-for-post.html post=post %}{%- endcapture -%}
+      {%- assign slug_list = post_slugs | strip | split: " " -%}
+      {%- if slug_list contains topic.slug -%}
+        {%- assign topic_count = topic_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+    <li class="topic">
+      {%- if topic_count > 0 -%}
+      <button type="button" class="bubble is-live" data-topic="{{ topic.slug }}" data-name="{{ topic.name }}" aria-pressed="false" aria-controls="posts" aria-label="{{ topic.name }}, {{ topic_count }} {% if topic_count == 1 %}Beitrag{% else %}Beiträge{% endif %}">
+      {%- else -%}
+      <button type="button" class="bubble is-quiet" disabled aria-label="{{ topic.name }}, noch keine Beiträge">
+      {%- endif -%}
+        <span class="bubble-name">{%- for line in topic.lines -%}<span>{{ line }}</span>{%- endfor -%}</span>
+      </button>
+    </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+
+<section class="latest" aria-labelledby="latest-heading">
+  <header class="latest-head reveal">
+    <h2 id="latest-heading" data-latest-heading>Neueste Beiträge</h2>
+    <span class="rule" aria-hidden="true"></span>
+  </header>
+  <p class="visually-hidden" data-filter-note aria-live="polite"></p>
+  <ul class="posts" id="posts">
+    {%- for post in site.posts -%}
+    {%- capture post_slugs -%}{% include topics-for-post.html post=post %}{%- endcapture -%}
+    <li class="post-card" data-topics="{{ post_slugs | strip }}">
+      <a href="{{ post.url | prepend: site.baseurl }}">
+        <span class="post-index" aria-hidden="true">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+        <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%-d %b %Y" }}</time>
+        <span class="post-name">{{ post.title }}</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    {%- endfor -%}
+  </ul>
+  <p class="empty-note" data-empty hidden>Noch keine Beiträge in diesem Thema.</p>
+</section>
