@@ -26,22 +26,26 @@
 {%- endif -%}
   {%- if topic.placement == "featured" -%}
   <span class="bubble">
-    {%- if topic.icon == "house" -%}{% include icons/house.html %}
-    {%- elsif topic.icon == "car" -%}{% include icons/car.html %}
-    {%- elsif topic.icon == "sun" -%}{% include icons/sun.html %}
-    {%- elsif topic.icon == "brain" -%}{% include icons/brain.html %}
-    {%- endif -%}
+    <span class="topic-icon" aria-hidden="true">
+      {%- if topic.icon == "house" -%}{% include icons/house.svg %}
+      {%- elsif topic.icon == "car" -%}{% include icons/car.svg %}
+      {%- elsif topic.icon == "sun" -%}{% include icons/sun.svg %}
+      {%- elsif topic.icon == "brain" -%}{% include icons/brain.svg %}
+      {%- endif -%}
+    </span>
     <span class="topic-label">
       {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
     </span>
   </span>
   {%- else -%}
   <span class="bubble">
-    {%- if topic.icon == "house" -%}{% include icons/house.html %}
-    {%- elsif topic.icon == "car" -%}{% include icons/car.html %}
-    {%- elsif topic.icon == "sun" -%}{% include icons/sun.html %}
-    {%- elsif topic.icon == "brain" -%}{% include icons/brain.html %}
-    {%- endif -%}
+    <span class="topic-icon" aria-hidden="true">
+      {%- if topic.icon == "house" -%}{% include icons/house.svg %}
+      {%- elsif topic.icon == "car" -%}{% include icons/car.svg %}
+      {%- elsif topic.icon == "sun" -%}{% include icons/sun.svg %}
+      {%- elsif topic.icon == "brain" -%}{% include icons/brain.svg %}
+      {%- endif -%}
+    </span>
   </span>
   <span class="topic-label">
     {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}

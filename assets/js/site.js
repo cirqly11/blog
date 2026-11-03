@@ -11,6 +11,7 @@ function setupTopics() {
   const topics = document.querySelectorAll(".topic.is-active");
   const cards = document.querySelectorAll(".post-card");
   const grid = document.querySelector(".post-grid");
+  const group = document.querySelector(".constellation");
   const live = document.querySelector(".topics-live");
   if (!topics.length || !cards.length) return;
 
@@ -37,11 +38,13 @@ function setupTopics() {
       });
       if (selected) {
         apply(null);
+        if (group) group.classList.remove("is-choosing");
         if (live) live.textContent = "Alle Beiträge";
         return;
       }
       topic.setAttribute("aria-pressed", "true");
       topic.classList.add("is-selected");
+      if (group) group.classList.add("is-choosing");
       apply(id);
       const label = topic.getAttribute("data-label") || "Thema";
       if (live) live.textContent = label + " ausgewählt";
