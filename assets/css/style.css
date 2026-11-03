@@ -296,15 +296,23 @@ button.topic {
 
 .topic-icon {
   display: block;
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
+  width: 68%;
+  height: 68%;
+  color: inherit;
   pointer-events: none;
 }
 
+.topic-icon svg,
+.social-slot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
 .topic-featured .topic-icon {
-  width: 2.45rem;
-  height: 2.45rem;
+  width: 2.7rem;
+  height: 2.7rem;
 }
 
 .bubble::after {
@@ -336,8 +344,8 @@ button.topic {
 
 .topic.is-idle .bubble {
   border-style: dashed;
-  border-color: var(--idle);
-  color: rgba(27, 22, 18, 0.45);
+  border-color: rgba(27, 22, 18, 0.42);
+  color: var(--ink);
 }
 
 .topic.is-idle .topic-label {
@@ -379,14 +387,6 @@ button.topic {
   color: var(--paper);
 }
 
-.topic-featured .topic-icon,
-.topic.is-selected .topic-icon,
-.topic.is-active:hover .topic-icon,
-.topic.is-active:focus-visible .topic-icon {
-  filter: brightness(0) invert(1);
-  opacity: 1;
-}
-
 .constellation.is-choosing .topic-featured:not(.is-selected) .bubble {
   background: transparent;
   color: var(--ink);
@@ -406,18 +406,6 @@ button.topic {
 
 .constellation.is-choosing .topic-featured.is-idle:not(.is-selected) .topic-label {
   color: rgba(27, 22, 18, 0.5);
-}
-
-.constellation.is-choosing .topic-featured:not(.is-selected):not(:hover):not(:focus-visible) .topic-icon {
-  filter: none;
-}
-
-.constellation.is-choosing .topic-featured.is-idle:not(.is-selected) .topic-icon {
-  opacity: 0.8;
-}
-
-.topic.is-idle:not(.topic-featured) .topic-icon {
-  opacity: 0.82;
 }
 
 .topics-soon {
@@ -730,7 +718,7 @@ main a {
   display: flex;
   align-items: center;
   gap: 1.15rem;
-  color: rgba(27, 22, 18, 0.38);
+  color: var(--ink);
 }
 
 .social-slot {
@@ -738,11 +726,9 @@ main a {
   place-items: center;
 }
 
-.social-slot img {
-  display: block;
-  width: 1.85rem;
-  height: 1.85rem;
-  opacity: 0.72;
+.social-slot svg {
+  width: 1.95rem;
+  height: 1.95rem;
 }
 
 .social-sep {
@@ -827,8 +813,8 @@ main a {
   }
 
   .topic-featured .topic-icon {
-    width: 2.05rem;
-    height: 2.05rem;
+    width: 2.35rem;
+    height: 2.35rem;
   }
 
   .topic-stack {
@@ -844,8 +830,8 @@ main a {
   }
 
   .topic-side .bubble {
-    width: 4.35rem;
-    height: 4.35rem;
+    width: 4.7rem;
+    height: 4.7rem;
   }
 
   .legal a {
