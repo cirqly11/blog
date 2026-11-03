@@ -10,6 +10,16 @@ layout: default
   {% if page.robot %}
   {% include waving-robot.html %}
   {% endif %}
+  {% if page.image %}
+  <figure class="post-figure reveal">
+    {% capture img_src %}{% include image-url.html src=page.image %}{% endcapture %}
+    {% if page.image_alt %}
+    <img src="{{ img_src | strip }}" alt="{{ page.image_alt | escape }}">
+    {% else %}
+    <img src="{{ img_src | strip }}" alt="">
+    {% endif %}
+  </figure>
+  {% endif %}
   <div class="post-body reveal">
     {{ content }}
   </div>

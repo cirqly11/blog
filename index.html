@@ -1,31 +1,67 @@
 ---
 layout: default
-title: Home
 ---
-<section class="hero">
-  <div class="ambient" aria-hidden="true">
-    <span class="frame"></span>
+<div class="constellation" role="group" aria-label="Themen">
+  <p class="topics-live sr-only" aria-live="polite"></p>
+  {% for topic in site.data.topics %}
+    {% if topic.placement == "featured" %}
+      {% include topic.html topic=topic %}
+    {% endif %}
+  {% endfor %}
+  <div class="topic-stack">
+    {% for topic in site.data.topics %}
+      {% if topic.placement == "stack" %}
+        {% include topic.html topic=topic %}
+      {% endif %}
+    {% endfor %}
+    <p class="topics-soon" style="--bob: 12s; --bob-delay: -3.4s">
+      <span class="soon-bubble" aria-hidden="true"></span>
+      <span class="soon-label">weitere themen folgen</span>
+    </p>
   </div>
-  <div class="hero-copy">
-    <p class="kicker">{{ site.author }}</p>
-    <h1>{{ site.title }}</h1>
+</div>
+
+<section class="latest" id="beitraege" aria-labelledby="latest-heading">
+  <div class="latest-head reveal">
+    <h2 id="latest-heading">Neueste Beiträge</h2>
     <span class="rule" aria-hidden="true"></span>
   </div>
-  <div class="mark" aria-hidden="true">
-    {% for i in (1..18) %}
-    <span></span>
+  {% if site.posts.size == 0 %}
+  <p class="latest-empty">Noch keine Beiträge.</p>
+  {% else %}
+  <ul class="post-grid">
+    {% for post in site.posts %}
+    {% capture topic_ids %}{% for topic in site.data.topics %}{% assign hit = false %}{% for cat in post.categories %}{% assign key = cat | downcase %}{% if topic.matches contains key %}{% assign hit = true %}{% endif %}{% endfor %}{% for tag in post.tags %}{% assign key = tag | downcase %}{% if topic.matches contains key %}{% assign hit = true %}{% endif %}{% endfor %}{% if hit %}{{ topic.id }} {% endif %}{% endfor %}{% endcapture %}
+    <li class="post-card{% if forloop.index > 4 %} is-later{% endif %}" data-topics="{{ topic_ids | strip_newlines | strip }}">
+      <a href="{{ post.url | prepend: site.baseurl }}">
+        <span class="post-thumb">
+          {% if post.image %}
+          {% capture img_src %}{% include image-url.html src=post.image %}{% endcapture %}
+          {% if post.image_alt %}
+          <img src="{{ img_src | strip }}" alt="{{ post.image_alt | escape }}" decoding="async">
+          {% else %}
+          <img src="{{ img_src | strip }}" alt="" decoding="async">
+          {% endif %}
+          {% else %}
+          <span class="post-thumb-empty" aria-hidden="true"><span>Bild</span></span>
+          {% endif %}
+        </span>
+        <span class="post-copy">
+          <span class="post-name">{{ post.title }}</span>
+          {% assign excerpt = post.excerpt | strip_html | normalize_whitespace %}
+          {% if excerpt != "" %}
+          <span class="rule post-rule" aria-hidden="true"></span>
+          <span class="post-excerpt">{{ excerpt }}</span>
+          {% endif %}
+          <span class="post-foot">
+            <span class="post-dot" aria-hidden="true"></span>
+            <span class="post-foot-line" aria-hidden="true"></span>
+            <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%-d %b %Y" }}</time>
+          </span>
+        </span>
+      </a>
+    </li>
     {% endfor %}
-  </div>
+  </ul>
+  {% endif %}
 </section>
-<ul class="posts">
-  {% for post in site.posts %}
-  <li class="post-card">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-      <span class="post-index" aria-hidden="true">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
-      <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%-d %b %Y" }}</time>
-      <span class="post-name">{{ post.title }}</span>
-      <span class="arrow" aria-hidden="true">→</span>
-    </a>
-  </li>
-  {% endfor %}
-</ul>

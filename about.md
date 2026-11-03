@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Über mich
+title: About
 lang: de
 ---
 
-<p class="reveal">Kurzer Platzhalter. Julian kann diesen Text später ersetzen.</p>
+<p class="reveal">Technikkreis — praxis statt hype. Kurzer Platzhalter. Julian kann diesen Text später ersetzen.</p>

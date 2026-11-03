@@ -1,8 +1,52 @@
 const motionUrl = "https://cdn.jsdelivr.net/npm/motion@14.9.0/+esm";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+setupTopics();
+
 if (!reduceMotion) {
   boot();
+}
+
+function setupTopics() {
+  const topics = document.querySelectorAll(".topic.is-active");
+  const cards = document.querySelectorAll(".post-card");
+  const grid = document.querySelector(".post-grid");
+  const live = document.querySelector(".topics-live");
+  if (!topics.length || !cards.length) return;
+
+  const apply = (id) => {
+    let shown = 0;
+    cards.forEach((card) => {
+      const keys = (card.getAttribute("data-topics") || "").trim().split(/\s+/).filter(Boolean);
+      const match = !id || keys.indexOf(id) !== -1;
+      const withinCap = Boolean(id) || shown < 4;
+      const visible = match && withinCap;
+      card.hidden = !visible;
+      if (visible) shown += 1;
+    });
+    if (grid) grid.classList.toggle("is-filtered", Boolean(id));
+  };
+
+  topics.forEach((topic) => {
+    topic.addEventListener("click", () => {
+      const id = topic.getAttribute("data-topic");
+      const selected = topic.getAttribute("aria-pressed") === "true";
+      topics.forEach((other) => {
+        other.setAttribute("aria-pressed", "false");
+        other.classList.remove("is-selected");
+      });
+      if (selected) {
+        apply(null);
+        if (live) live.textContent = "Alle Beiträge";
+        return;
+      }
+      topic.setAttribute("aria-pressed", "true");
+      topic.classList.add("is-selected");
+      apply(id);
+      const label = topic.getAttribute("data-label") || "Thema";
+      if (live) live.textContent = label + " ausgewählt";
+    });
+  });
 }
 
 async function boot() {
@@ -16,10 +60,10 @@ async function boot() {
 
   const { animate, stagger, inView, hover, scroll } = motion;
 
-  const heroCopy = document.querySelector(".hero-copy");
-  if (heroCopy) {
+  const brand = document.querySelector(".brand");
+  if (brand) {
     animate(
-      heroCopy,
+      brand,
       { opacity: [0, 1], transform: ["translateY(14px)", "none"] },
       { duration: 0.55, ease: "easeOut" }
     );
@@ -34,34 +78,31 @@ async function boot() {
     );
   }
 
-  const mark = document.querySelector(".mark");
-  if (mark) {
-    const cells = mark.querySelectorAll("span");
-    const style = getComputedStyle(mark);
-    const columns = style.gridTemplateColumns.split(" ").filter((part) => part && part !== "none").length;
-    const rows = style.gridTemplateRows.split(" ").filter((part) => part && part !== "none").length;
-    const delay = columns && rows
-      ? stagger(0.045, { grid: [columns, rows], from: "center" })
-      : stagger(0.04, { from: "center" });
-
+  const bubbles = document.querySelectorAll(".topic, .topics-soon");
+  if (bubbles.length) {
     animate(
-      cells,
-      { opacity: [0, 1], transform: ["scale(0.5)", "scale(1)"] },
-      { duration: 0.45, ease: "easeOut", delay }
+      bubbles,
+      { opacity: [0, 1], y: [10, 0] },
+      { duration: 0.5, ease: "easeOut", delay: stagger(0.07, { startDelay: 0.08 }) }
     );
+  }
 
-    const frame = document.querySelector(".ambient");
-    const hero = document.querySelector(".hero");
-    if (frame && hero) {
-      try {
-        scroll(animate(frame, { opacity: [1, 0] }, { ease: "linear" }), {
-          target: hero,
-          offset: ["start start", "end start"],
-        });
-      } catch {
-        frame.style.opacity = "1";
-      }
-    }
+  const activeTopics = document.querySelectorAll(".topic.is-active");
+  if (activeTopics.length) {
+    hover(activeTopics, (element) => {
+      const bubble = element.querySelector(".bubble");
+      if (!bubble) return;
+      bubble.style.willChange = "transform";
+      animate(bubble, { scale: 1.045 }, { type: "spring", bounce: 0.16, visualDuration: 0.28 });
+      return () => {
+        const leave = animate(bubble, { scale: 1 }, { type: "spring", bounce: 0.1, visualDuration: 0.32 });
+        if (leave && typeof leave.then === "function") {
+          leave.then(() => {
+            bubble.style.willChange = "auto";
+          });
+        }
+      };
+    });
   }
 
   const cards = document.querySelectorAll(".post-card");

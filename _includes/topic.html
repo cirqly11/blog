@@ -1,0 +1,56 @@
+{%- assign topic = include.topic -%}
+{%- assign active = false -%}
+{%- for post in site.posts -%}
+  {%- for cat in post.categories -%}
+    {%- assign key = cat | downcase -%}
+    {%- if topic.matches contains key -%}
+      {%- assign active = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- for tag in post.tags -%}
+    {%- assign key = tag | downcase -%}
+    {%- if topic.matches contains key -%}
+      {%- assign active = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- if topic.placement == "featured" -%}
+  {%- assign variant = "topic-featured" -%}
+{%- else -%}
+  {%- assign variant = "topic-side" -%}
+{%- endif -%}
+{%- if active -%}
+<button type="button" class="topic {{ variant }} is-active" data-topic="{{ topic.id }}" data-label="{{ topic.name | escape }}" aria-pressed="false" aria-controls="beitraege" style="--bob: {{ topic.bob }}; --bob-delay: {{ topic.delay }}">
+{%- else -%}
+<div class="topic {{ variant }} is-idle" style="--bob: {{ topic.bob }}; --bob-delay: {{ topic.delay }}">
+{%- endif -%}
+  {%- if topic.placement == "featured" -%}
+  <span class="bubble">
+    {%- if topic.icon == "house" -%}{% include icons/house.html %}
+    {%- elsif topic.icon == "car" -%}{% include icons/car.html %}
+    {%- elsif topic.icon == "sun" -%}{% include icons/sun.html %}
+    {%- elsif topic.icon == "brain" -%}{% include icons/brain.html %}
+    {%- endif -%}
+    <span class="topic-label">
+      {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
+    </span>
+  </span>
+  {%- else -%}
+  <span class="bubble">
+    {%- if topic.icon == "house" -%}{% include icons/house.html %}
+    {%- elsif topic.icon == "car" -%}{% include icons/car.html %}
+    {%- elsif topic.icon == "sun" -%}{% include icons/sun.html %}
+    {%- elsif topic.icon == "brain" -%}{% include icons/brain.html %}
+    {%- endif -%}
+  </span>
+  <span class="topic-label">
+    {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
+  </span>
+  {%- endif -%}
+  {%- if active -%}
+  <span class="sr-only">, mit Beiträgen</span>
+  </button>
+  {%- else -%}
+  <span class="sr-only">, noch ohne Beiträge</span>
+</div>
+  {%- endif -%}

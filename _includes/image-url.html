@@ -1,0 +1,10 @@
+{%- assign src = include.src -%}
+{%- if src contains "://" -%}
+{{- src -}}
+{%- else -%}
+{%- assign first = src | slice: 0, 1 -%}
+{%- if first != "/" -%}
+{%- assign src = src | prepend: "/" -%}
+{%- endif -%}
+{{- src | prepend: site.baseurl -}}
+{%- endif -%}

@@ -1,0 +1,62 @@
+# A post activates a bubble when its category or tag matches one of `matches`
+# (compared case-insensitively). Example:
+#   categories: [smart-home]
+#   tags: ["PV / Energie"]
+- id: smart-home
+  name: Smart Home
+  icon: house
+  placement: featured
+  bob: "9.6s"
+  delay: "-0.4s"
+  lines:
+    - Smart
+    - Home
+  matches:
+    - smart-home
+    - smart home
+    - smarthome
+- id: e-auto
+  name: E-Auto / Wallbox
+  icon: car
+  placement: stack
+  bob: "7.8s"
+  delay: "-2.1s"
+  lines:
+    - E-Auto /
+    - Wallbox
+  matches:
+    - e-auto
+    - e-auto / wallbox
+    - e-auto/wallbox
+    - wallbox
+    - e-auto-wallbox
+    - elektroauto
+- id: pv
+  name: PV / Energie
+  icon: sun
+  placement: stack
+  bob: "8.7s"
+  delay: "-4.2s"
+  lines:
+    - PV /
+    - Energie
+  matches:
+    - pv
+    - pv / energie
+    - pv/energie
+    - energie
+    - photovoltaik
+    - photovoltaic
+- id: ki
+  name: KI
+  icon: brain
+  placement: stack
+  bob: "7.2s"
+  delay: "-1.3s"
+  lines:
+    - KI
+  matches:
+    - ki
+    - ai
+    - künstliche intelligenz
+    - kuenstliche intelligenz
