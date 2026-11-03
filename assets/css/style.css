@@ -416,6 +416,86 @@ main a {
   to { transform: translate3d(-14px, 18px, 0) rotate(24deg); }
 }
 
+.post:has(.robot) {
+  position: relative;
+  min-height: 16.5rem;
+}
+
+.post:has(.robot) .post-head,
+.post:has(.robot) .post-body {
+  max-width: calc(100% - 12rem);
+}
+
+.robot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10.75rem;
+  margin: 0;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.robot svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.robot .shape {
+  fill: var(--paper);
+  stroke: currentColor;
+  stroke-width: 2.75;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.robot .accent {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.robot .tip {
+  fill: var(--accent);
+  stroke: currentColor;
+  stroke-width: 2.75;
+}
+
+.robot .smile,
+.robot .antenna {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.75;
+  stroke-linecap: round;
+}
+
+.robot .shadow {
+  fill: color-mix(in srgb, var(--ink) 9%, transparent);
+  stroke: none;
+}
+
+.robot .arm-still {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .post:has(.robot) .post-head,
+  .post:has(.robot) .post-body {
+    max-width: none;
+  }
+
+  .post:has(.robot) {
+    min-height: 0;
+  }
+
+  .robot {
+    position: static;
+    width: 8.5rem;
+    margin: 0.35rem 0 1.35rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .frame {
     animation: none;
@@ -423,6 +503,14 @@ main a {
 
   .arrow {
     transition: none;
+  }
+
+  .robot .arm-live {
+    display: none;
+  }
+
+  .robot .arm-still {
+    display: inline;
   }
 }
 
@@ -434,5 +522,22 @@ main a {
   .mark span {
     background: CanvasText;
     border-color: CanvasText;
+  }
+
+  .robot .shape,
+  .robot .smile,
+  .robot .antenna {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .robot .accent,
+  .robot .tip {
+    fill: CanvasText;
+    stroke: CanvasText;
+  }
+
+  .robot .shadow {
+    fill: transparent;
   }
 }
