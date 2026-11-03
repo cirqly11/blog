@@ -1,8 +1,11 @@
-title: "Julian's Blog"
-author: "Julian Kreis"
+title: Technikkreis
+slogan: praxis statt hype
+description: praxis statt hype
+author: Julian Kreis
 url: "https://cirqly11.github.io"
 baseurl: "/blog"
 permalink: pretty
+lang: de
 
 defaults:
   - scope:
