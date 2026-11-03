@@ -13,4 +13,6 @@ defaults:
 
 exclude:
   - README.md
+  - PREVIEW.md
   - vendor
+  - assets/preview
