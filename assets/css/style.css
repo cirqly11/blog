@@ -541,11 +541,6 @@ main a {
   .arrow {
     transition: none;
   }
-
-  .robot .wave-shoulder,
-  .robot .wave-elbow {
-    animation: none;
-  }
 }
 
 @media (forced-colors: active) {
