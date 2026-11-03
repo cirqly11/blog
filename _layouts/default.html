@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | prepend: site.baseurl }}">
+</head>
+<body>
+  <header>
+    <a class="site-title" href="{{ '/' | prepend: site.baseurl }}">{{ site.title }}</a>
+    <nav>
+      <a href="{{ '/' | prepend: site.baseurl }}">Home</a>
+      <a href="{{ '/about/' | prepend: site.baseurl }}">About</a>
+    </nav>
+  </header>
+  <main>
+    {{ content }}
+  </main>
+</body>
+</html>
