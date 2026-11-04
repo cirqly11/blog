@@ -5,8 +5,9 @@ layout: default
   <div class="orbit-stage" role="group" aria-label="Themen">
     <p class="topics-live sr-only" aria-live="polite"></p>
     <div class="orbit-rings" aria-hidden="true">
-      <span class="orbit-ring orbit-ring-inner"></span>
+      <span class="orbit-ticks"><span></span><span></span><span></span><span></span></span>
       <span class="orbit-ring orbit-ring-outer"></span>
+      <span class="orbit-ring orbit-ring-inner"></span>
     </div>
     <button type="button" class="sun is-all" aria-pressed="true" aria-controls="beitraege">
       <span class="sun-disc">
@@ -26,13 +27,15 @@ layout: default
 </div>
 
 <section class="latest" id="beitraege" aria-labelledby="latest-heading">
-  <div class="latest-head reveal">
+  <div class="latest-head">
     <h2 id="latest-heading">Neueste Beiträge</h2>
+    <p class="filter-kicker" aria-hidden="true">Alle Beiträge</p>
     <span class="rule" aria-hidden="true"></span>
   </div>
   {% if site.posts.size == 0 %}
   <p class="latest-empty">Noch keine Beiträge.</p>
   {% else %}
+  <div class="latest-body">
   <ul class="post-grid">
     {% for post in site.posts %}
     {% capture topic_ids %}{% for topic in site.data.topics %}{% assign hit = false %}{% for cat in post.categories %}{% assign key = cat | downcase %}{% if topic.matches contains key %}{% assign hit = true %}{% endif %}{% endfor %}{% for tag in post.tags %}{% assign key = tag | downcase %}{% if topic.matches contains key %}{% assign hit = true %}{% endif %}{% endfor %}{% if hit %}{{ topic.id }} {% endif %}{% endfor %}{% endcapture %}
@@ -62,6 +65,7 @@ layout: default
     </li>
     {% endfor %}
   </ul>
-  {% endif %}
   <p class="latest-none" hidden>Keine Beiträge zu diesem Thema.</p>
+  </div>
+  {% endif %}
 </section>

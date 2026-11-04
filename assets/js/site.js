@@ -9,18 +9,33 @@ if (!reduceMotion) {
 }
 
 function setupHeader() {
-  const header = document.querySelector(".page-home .site-header");
-  if (!header) return;
+  const mast = document.querySelector(".page-home .site-header");
+  const bar = document.querySelector(".running-head");
+  if (!mast || !bar) return;
+
   let frame = 0;
+  let shown = false;
+
+  const title = mast.querySelector(".wordmark");
+
   const update = () => {
     frame = 0;
-    header.classList.toggle("is-compact", window.scrollY > 72);
+    const titleBottom = (title || mast).getBoundingClientRect().bottom;
+    if (!shown && titleBottom < 2) shown = true;
+    else if (shown && titleBottom > 36) shown = false;
+    bar.classList.toggle("is-visible", shown);
+    bar.setAttribute("aria-hidden", shown ? "false" : "true");
   };
+
   update();
   window.addEventListener("scroll", () => {
     if (frame) return;
     frame = requestAnimationFrame(update);
   }, { passive: true });
+  window.addEventListener("resize", () => {
+    if (frame) return;
+    frame = requestAnimationFrame(update);
+  });
 }
 
 function setupTopics() {
@@ -28,9 +43,27 @@ function setupTopics() {
   const sun = document.querySelector(".sun");
   const cards = document.querySelectorAll(".post-card");
   const grid = document.querySelector(".post-grid");
+  const latestBody = document.querySelector(".latest-body");
   const live = document.querySelector(".topics-live");
   const empty = document.querySelector(".latest-none");
+  const kicker = document.querySelector(".filter-kicker");
   if (!topics.length && !sun) return;
+
+  if (latestBody) latestBody.style.minHeight = latestBody.offsetHeight + "px";
+
+  const pinScroll = (fn) => {
+    const y = window.scrollY;
+    fn();
+    const restore = () => {
+      if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y);
+    };
+    restore();
+    requestAnimationFrame(() => requestAnimationFrame(restore));
+  };
+
+  const focusStill = (button) => {
+    button.focus({ preventScroll: true });
+  };
 
   const apply = (id) => {
     let shown = 0;
@@ -57,6 +90,10 @@ function setupTopics() {
     }
     apply(null);
     if (live) live.textContent = "Alle Beiträge";
+    if (kicker) {
+      kicker.textContent = "Alle Beiträge";
+      kicker.classList.remove("is-filtered");
+    }
   };
 
   const selectTopic = (topic) => {
@@ -73,14 +110,85 @@ function setupTopics() {
     apply(topic.getAttribute("data-topic"));
     const label = topic.getAttribute("data-label") || "Thema";
     if (live) live.textContent = label + " ausgewählt";
+    if (kicker) {
+      kicker.textContent = label;
+      kicker.classList.add("is-filtered");
+    }
   };
 
-  if (sun) sun.addEventListener("click", selectAll);
+  const stage = document.querySelector(".orbit-stage");
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  let hoverPaused = false;
+  let held = false;
+  let pointerHandled = false;
 
-  topics.forEach((topic) => {
-    topic.addEventListener("click", () => {
+  const applyPause = () => {
+    if (!stage) return;
+    const value = hoverPaused || held ? "paused" : "";
+    stage.querySelectorAll(".planet, .planet-slot").forEach((el) => {
+      el.style.animationPlayState = value;
+    });
+  };
+
+  if (stage && canHover) {
+    stage.addEventListener("pointerenter", () => {
+      hoverPaused = true;
+      applyPause();
+    });
+    stage.addEventListener("pointerleave", () => {
+      hoverPaused = false;
+      applyPause();
+    });
+  }
+
+  const chooseTopic = (topic) => {
+    pinScroll(() => {
       if (topic.getAttribute("aria-pressed") === "true") selectAll();
       else selectTopic(topic);
+    });
+  };
+
+  if (sun) {
+    sun.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      pointerHandled = true;
+      focusStill(sun);
+      pinScroll(selectAll);
+    });
+    sun.addEventListener("click", () => {
+      if (pointerHandled) {
+        pointerHandled = false;
+        return;
+      }
+      pinScroll(selectAll);
+    });
+  }
+
+  topics.forEach((topic) => {
+    topic.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      pointerHandled = true;
+      focusStill(topic);
+      held = true;
+      applyPause();
+      chooseTopic(topic);
+    });
+    topic.addEventListener("pointerup", () => {
+      held = false;
+      applyPause();
+    });
+    topic.addEventListener("pointercancel", () => {
+      held = false;
+      applyPause();
+    });
+    topic.addEventListener("click", () => {
+      if (pointerHandled) {
+        pointerHandled = false;
+        return;
+      }
+      chooseTopic(topic);
     });
   });
 }
@@ -90,97 +198,18 @@ async function boot() {
   try {
     motion = await import(motionUrl);
   } catch {
-    document.documentElement.classList.add("motion-off");
     return;
   }
 
-  const { animate, stagger, inView, scroll } = motion;
-
-  const brand = document.querySelector(".brand");
-  if (brand) {
-    animate(
-      brand,
-      { opacity: [0, 1], y: [10, 0] },
-      { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-    );
-  }
-
-  const rules = document.querySelectorAll(".rule");
-  if (rules.length) {
-    animate(
-      rules,
-      { transform: ["scaleX(0)", "scaleX(1)"] },
-      { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.08 }
-    );
-  }
-
-  const sun = document.querySelector(".sun");
-  if (sun) {
-    animate(
-      sun,
-      { opacity: [0, 1], scale: [0.97, 1] },
-      { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
-    );
-  }
-
-  const rings = document.querySelector(".orbit-rings");
-  if (rings) {
-    animate(rings, { opacity: [0, 1] }, { duration: 0.8, ease: "easeOut" });
-  }
-
-  const bubbles = document.querySelectorAll(".topic");
-  if (bubbles.length) {
-    animate(
-      bubbles,
-      { opacity: [0, 1], y: [8, 0] },
-      { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: stagger(0.06, { startDelay: 0.06 }) }
-    );
-  }
-
-  const cards = document.querySelectorAll(".post-card");
-  if (cards.length) {
-    const entrance = animate(
-      cards,
-      { opacity: [0, 1], y: [10, 0] },
-      { duration: 0.45, ease: "easeOut", delay: stagger(0.06, { startDelay: 0.12 }) }
-    );
-    if (entrance && typeof entrance.then === "function") {
-      entrance.then(() => {
-        cards.forEach((card) => {
-          card.style.willChange = "auto";
-        });
-      });
-    }
-  }
-
-  const reveals = [...document.querySelectorAll(".reveal")];
-  if (reveals.length) {
-    inView(
-      reveals,
-      (element) => {
-        const index = reveals.indexOf(element);
-        animate(
-          element,
-          { opacity: [0, 1], y: [12, 0] },
-          {
-            duration: 0.5,
-            ease: [0.22, 1, 0.36, 1],
-            delay: Math.min(index * 0.05, 0.16),
-          }
-        );
-      },
-      { margin: "0px 0px -8% 0px" }
-    );
-  }
-
+  const { animate, scroll } = motion;
   const bar = document.querySelector(".read-progress");
   const article = document.querySelector(".post");
-  if (bar && article && document.documentElement.scrollHeight > window.innerHeight + 64) {
-    bar.hidden = false;
-    try {
-      scroll(animate(bar, { transform: ["scaleX(0)", "scaleX(1)"] }, { ease: "linear" }));
-    } catch {
-      bar.hidden = true;
-    }
+  if (!bar || !article || document.documentElement.scrollHeight <= window.innerHeight + 64) return;
+
+  bar.hidden = false;
+  try {
+    scroll(animate(bar, { transform: ["scaleX(0)", "scaleX(1)"] }, { ease: "linear" }));
+  } catch {
+    bar.hidden = true;
   }
 }

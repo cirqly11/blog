@@ -14,12 +14,7 @@
     {%- endif -%}
   {%- endfor -%}
 {%- endfor -%}
-{%- if topic.placement == "featured" -%}
-  {%- assign variant = "topic-featured" -%}
-{%- else -%}
-  {%- assign variant = "topic-side" -%}
-{%- endif -%}
-<button type="button" class="topic {{ variant }} {% if active %}is-active{% else %}is-idle{% endif %}" data-topic="{{ topic.id }}" data-label="{{ topic.name | escape }}" aria-pressed="false" aria-controls="beitraege" style="--bob: {{ topic.bob }}; --bob-delay: {{ topic.delay }}">
+<button type="button" class="topic{% if active %} is-active{% else %} is-idle{% endif %}" data-topic="{{ topic.id }}" data-label="{{ topic.name | escape }}" aria-pressed="false" aria-controls="beitraege">
   <span class="bubble">
     <span class="topic-icon" aria-hidden="true">
       {%- if topic.icon == "house" -%}{% include icons/house.svg %}

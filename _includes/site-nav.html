@@ -1,0 +1,11 @@
+<nav class="site-nav" aria-label="Hauptnavigation">
+  <a href="{{ '/' | prepend: site.baseurl }}"{% if page.url == "/" %} aria-current="page"{% endif %}>
+    <span>Start</span>
+    <span class="nav-line" aria-hidden="true"></span>
+  </a>
+  <span class="nav-sep" aria-hidden="true"></span>
+  <a href="{{ '/about/' | prepend: site.baseurl }}"{% if page.url == "/about/" %} aria-current="page"{% endif %}>
+    <span>Über</span>
+    <span class="nav-line" aria-hidden="true"></span>
+  </a>
+</nav>

@@ -2,16 +2,18 @@
 layout: default
 ---
 <article class="post">
-  <header class="post-head reveal">
-    {% include date-de.html date=page.date %}
-    <h1>{{ page.title }}</h1>
-    <span class="rule" aria-hidden="true"></span>
+  <header class="post-head">
+    <div class="post-intro">
+      {% include date-de.html date=page.date %}
+      <h1>{{ page.title }}</h1>
+      <span class="rule" aria-hidden="true"></span>
+    </div>
+    {% if page.robot %}
+    {% include waving-robot.html %}
+    {% endif %}
   </header>
-  {% if page.robot %}
-  {% include waving-robot.html %}
-  {% endif %}
   {% if page.image %}
-  <figure class="post-figure reveal">
+  <figure class="post-figure">
     {% capture img_src %}{% include image-url.html src=page.image %}{% endcapture %}
     {% if page.image_alt %}
     <img src="{{ img_src | strip }}" alt="{{ page.image_alt | escape }}">
@@ -20,7 +22,7 @@ layout: default
     {% endif %}
   </figure>
   {% endif %}
-  <div class="post-body reveal">
+  <div class="post-body">
     {{ content }}
   </div>
 </article>
