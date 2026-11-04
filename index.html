@@ -9,24 +9,6 @@ layout: default
       <span class="orbit-ring orbit-ring-outer"></span>
     </div>
     <button type="button" class="sun is-all" aria-pressed="true" aria-controls="beitraege">
-      <span class="sun-rays" aria-hidden="true">
-        <svg viewBox="0 0 200 200" focusable="false">
-          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-            <path d="M100 16v16" />
-            <path d="M100 170v14" />
-            <path d="M16 102h15" />
-            <path d="M170 98h14" />
-            <path d="M36 38l12 11" />
-            <path d="M154 154l10 9" />
-            <path d="M160 42l-11 10" />
-            <path d="M40 160l9-11" />
-            <path d="M72 22l5 13" />
-            <path d="M130 168l-4-12" />
-            <path d="M28 74l13 3" />
-            <path d="M162 128l-12-2" />
-          </g>
-        </svg>
-      </span>
       <span class="sun-disc">
         <span class="sun-label">Technikkreis</span>
         <span class="sr-only">, alle Beiträge</span>
@@ -34,16 +16,13 @@ layout: default
     </button>
     {% for topic in site.data.topics %}
     <div class="planet planet-{{ topic.id }}">
-      {% include topic.html topic=topic %}
+      <div class="planet-slot">
+        {% include topic.html topic=topic %}
+      </div>
     </div>
     {% endfor %}
-    <div class="planet planet-soon">
-      <p class="topics-soon" style="--bob: 12s; --bob-delay: -3.4s">
-        <span class="soon-bubble" aria-hidden="true"></span>
-        <span class="soon-label">weitere themen folgen</span>
-      </p>
-    </div>
   </div>
+  <p class="orbit-note">Weitere Themen folgen</p>
 </div>
 
 <section class="latest" id="beitraege" aria-labelledby="latest-heading">
@@ -68,21 +47,16 @@ layout: default
           <img src="{{ img_src | strip }}" alt="" decoding="async">
           {% endif %}
           {% else %}
-          <span class="post-thumb-empty" aria-hidden="true"><span>Bild</span></span>
+          <span class="post-thumb-empty" aria-hidden="true"></span>
           {% endif %}
         </span>
         <span class="post-copy">
+          {% include date-de.html date=post.date %}
           <span class="post-name">{{ post.title }}</span>
           {% assign excerpt = post.excerpt | strip_html | normalize_whitespace %}
           {% if excerpt != "" %}
-          <span class="rule post-rule" aria-hidden="true"></span>
           <span class="post-excerpt">{{ excerpt }}</span>
           {% endif %}
-          <span class="post-foot">
-            <span class="post-dot" aria-hidden="true"></span>
-            <span class="post-foot-line" aria-hidden="true"></span>
-            <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%-d %b %Y" }}</time>
-          </span>
         </span>
       </a>
     </li>
