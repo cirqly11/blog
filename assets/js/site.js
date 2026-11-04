@@ -2,9 +2,25 @@ const motionUrl = "https://cdn.jsdelivr.net/npm/motion@14.9.0/+esm";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 setupTopics();
+setupHeader();
 
 if (!reduceMotion) {
   boot();
+}
+
+function setupHeader() {
+  const header = document.querySelector(".page-home .site-header");
+  if (!header) return;
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    header.classList.toggle("is-compact", window.scrollY > 28);
+  };
+  update();
+  window.addEventListener("scroll", () => {
+    if (frame) return;
+    frame = requestAnimationFrame(update);
+  }, { passive: true });
 }
 
 function setupTopics() {
@@ -84,26 +100,48 @@ async function boot() {
   if (bubbles.length) {
     animate(
       bubbles,
-      { opacity: [0, 1], y: [10, 0] },
-      { duration: 0.5, ease: "easeOut", delay: stagger(0.07, { startDelay: 0.08 }) }
+      { opacity: [0, 1], y: [18, 0] },
+      { duration: 0.62, ease: [0.22, 1, 0.36, 1], delay: stagger(0.09, { startDelay: 0.05 }) }
     );
   }
 
-  const activeTopics = document.querySelectorAll("button.topic");
-  if (activeTopics.length) {
-    hover(activeTopics, (element) => {
+  const topicButtons = document.querySelectorAll("button.topic");
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (topicButtons.length && canHover) {
+    hover(topicButtons, (element) => {
       const bubble = element.querySelector(".bubble");
       if (!bubble) return;
       bubble.style.willChange = "transform";
-      animate(bubble, { scale: 1.045 }, { type: "spring", bounce: 0.16, visualDuration: 0.28 });
+      animate(bubble, { scale: 1.07 }, { type: "spring", bounce: 0.2, visualDuration: 0.32 });
       return () => {
-        const leave = animate(bubble, { scale: 1 }, { type: "spring", bounce: 0.1, visualDuration: 0.32 });
+        const leave = animate(bubble, { scale: 1 }, { type: "spring", bounce: 0.12, visualDuration: 0.36 });
         if (leave && typeof leave.then === "function") {
           leave.then(() => {
             bubble.style.willChange = "auto";
           });
         }
       };
+    });
+  }
+
+  if (topicButtons.length) {
+    topicButtons.forEach((topic) => {
+      topic.addEventListener("click", () => {
+        if (!topic.classList.contains("is-selected")) return;
+        const bubble = topic.querySelector(".bubble");
+        if (!bubble) return;
+        bubble.style.willChange = "transform";
+        const pop = animate(
+          bubble,
+          { scale: [1, 1.08, 1] },
+          { duration: 0.46, ease: [0.22, 1, 0.36, 1] }
+        );
+        if (pop && typeof pop.then === "function") {
+          pop.then(() => {
+            bubble.style.willChange = "auto";
+          });
+        }
+      });
     });
   }
 

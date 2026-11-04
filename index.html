@@ -3,6 +3,9 @@ layout: default
 ---
 <div class="constellation" role="group" aria-label="Themen">
   <p class="topics-live sr-only" aria-live="polite"></p>
+  <span class="sketch-mark sketch-mark-a" aria-hidden="true"></span>
+  <span class="sketch-mark sketch-mark-b" aria-hidden="true"></span>
+  <span class="sketch-mark sketch-mark-c" aria-hidden="true"></span>
   {% for topic in site.data.topics %}
     {% if topic.placement == "featured" %}
       {% include topic.html topic=topic %}
