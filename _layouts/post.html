@@ -13,10 +13,9 @@ layout: default
   {% if page.image %}
   <figure class="post-figure reveal">
     {% capture img_src %}{% include image-url.html src=page.image %}{% endcapture %}
-    {% if page.image_alt %}
-    <img src="{{ img_src | strip }}" alt="{{ page.image_alt | escape }}">
-    {% else %}
-    <img src="{{ img_src | strip }}" alt="">
+    <img src="{{ img_src | strip }}" alt="{{ page.image_alt | default: '' | escape }}"{% if page.image_width %} width="{{ page.image_width }}" height="{{ page.image_height }}"{% endif %} decoding="async">
+    {% if page.image_caption %}
+    <figcaption>{{ page.image_caption | escape }}</figcaption>
     {% endif %}
   </figure>
   {% endif %}
