@@ -8,12 +8,12 @@ if (!reduceMotion) {
 }
 
 function setupTopics() {
-  const topics = document.querySelectorAll(".topic.is-active");
+  const topics = document.querySelectorAll("button.topic");
   const cards = document.querySelectorAll(".post-card");
   const grid = document.querySelector(".post-grid");
-  const group = document.querySelector(".constellation");
   const live = document.querySelector(".topics-live");
-  if (!topics.length || !cards.length) return;
+  const empty = document.querySelector(".latest-none");
+  if (!topics.length) return;
 
   const apply = (id) => {
     let shown = 0;
@@ -26,6 +26,7 @@ function setupTopics() {
       if (visible) shown += 1;
     });
     if (grid) grid.classList.toggle("is-filtered", Boolean(id));
+    if (empty) empty.hidden = !id || shown > 0;
   };
 
   topics.forEach((topic) => {
@@ -38,13 +39,11 @@ function setupTopics() {
       });
       if (selected) {
         apply(null);
-        if (group) group.classList.remove("is-choosing");
         if (live) live.textContent = "Alle Beiträge";
         return;
       }
       topic.setAttribute("aria-pressed", "true");
       topic.classList.add("is-selected");
-      if (group) group.classList.add("is-choosing");
       apply(id);
       const label = topic.getAttribute("data-label") || "Thema";
       if (live) live.textContent = label + " ausgewählt";
@@ -90,7 +89,7 @@ async function boot() {
     );
   }
 
-  const activeTopics = document.querySelectorAll(".topic.is-active");
+  const activeTopics = document.querySelectorAll("button.topic");
   if (activeTopics.length) {
     hover(activeTopics, (element) => {
       const bubble = element.querySelector(".bubble");
@@ -110,9 +109,6 @@ async function boot() {
 
   const cards = document.querySelectorAll(".post-card");
   if (cards.length) {
-    cards.forEach((card) => {
-      card.style.willChange = "transform";
-    });
     const entrance = animate(
       cards,
       { opacity: [0, 1], y: [16, 0] },
@@ -126,18 +122,6 @@ async function boot() {
       });
     }
 
-    hover(cards, (element) => {
-      element.style.willChange = "transform";
-      animate(element, { y: -3 }, { type: "spring", bounce: 0.18, visualDuration: 0.24 });
-      return () => {
-        const leave = animate(element, { y: 0 }, { type: "spring", bounce: 0.12, visualDuration: 0.28 });
-        if (leave && typeof leave.then === "function") {
-          leave.then(() => {
-            element.style.willChange = "auto";
-          });
-        }
-      };
-    });
   }
 
   const reveals = [...document.querySelectorAll(".reveal")];
