@@ -183,4 +183,87 @@ async function boot() {
       bar.hidden = true;
     }
   }
+
+  setupMorningLoop({ animate, inView });
+}
+
+function showMorningStatic(root) {
+  root.classList.add("is-static");
+  const pauseBtn = root.querySelector("[data-morning-pause]");
+  if (pauseBtn) pauseBtn.hidden = true;
+}
+
+function setupMorningLoop({ animate, inView }) {
+  const root = document.querySelector("[data-morning]");
+  if (!root || reduceMotion) return;
+
+  const live = root.querySelector(".morning-live");
+  const clock = live && live.querySelector("[data-clock]");
+  const same = live && live.querySelector("[data-same]");
+  const delta = live && live.querySelector("[data-delta]");
+  const still = live && live.querySelector("[data-still]");
+  const alertEl = live && live.querySelector("[data-alert]");
+  const pauseBtn = root.querySelector("[data-morning-pause]");
+  if (!clock || !same || !delta || !still || !alertEl) {
+    showMorningStatic(root);
+    return;
+  }
+
+  const ease = [0.22, 1, 0.36, 1];
+  let timeline;
+  try {
+    timeline = animate(
+      [
+        [clock, { opacity: [1, 0.45, 1] }, { duration: 0.8, ease, at: 0 }],
+        [same, { opacity: 0 }, { duration: 0.4, ease, at: 1.05 }],
+        [still, { opacity: 0 }, { duration: 0.4, ease, at: "<" }],
+        [delta, { opacity: [0, 1], y: [8, 0] }, { duration: 0.48, ease, at: 1.4 }],
+        [alertEl, { opacity: [0, 1], y: [8, 0] }, { duration: 0.42, ease, at: 1.78 }],
+        [alertEl, { opacity: 0, y: 6 }, { duration: 0.38, ease, at: 4.15 }],
+        [delta, { opacity: 0 }, { duration: 0.38, ease, at: "<" }],
+        [same, { opacity: 1 }, { duration: 0.48, ease, at: 4.55 }],
+        [still, { opacity: 1 }, { duration: 0.5, ease, at: "<" }],
+      ],
+      { repeat: Infinity, repeatDelay: 1.25, autoplay: false }
+    );
+  } catch {
+    showMorningStatic(root);
+    return;
+  }
+
+  if (!timeline || typeof timeline.play !== "function") {
+    showMorningStatic(root);
+    return;
+  }
+
+  let userPaused = false;
+  let inSight = false;
+
+  const sync = () => {
+    const playing = inSight && !userPaused && !document.hidden;
+    root.classList.toggle("is-playing", playing);
+    if (playing) timeline.play();
+    else timeline.pause();
+  };
+
+  inView(live, () => {
+    inSight = true;
+    sync();
+    return () => {
+      inSight = false;
+      sync();
+    };
+  });
+
+  document.addEventListener("visibilitychange", sync);
+
+  if (pauseBtn) {
+    pauseBtn.hidden = false;
+    pauseBtn.addEventListener("click", () => {
+      userPaused = !userPaused;
+      pauseBtn.setAttribute("aria-pressed", userPaused ? "true" : "false");
+      pauseBtn.textContent = userPaused ? "Animation fortsetzen" : "Animation anhalten";
+      sync();
+    });
+  }
 }

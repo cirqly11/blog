@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f3f0ea">
+  {% if page.description %}
+  <meta name="description" content="{{ page.description | escape }}">
+  {% endif %}
   <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
   <link rel="icon" href="{{ '/assets/favicon.svg' | prepend: site.baseurl }}" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,6 +72,8 @@
     <style>
       .brand, .hero-copy, .post-card, .reveal, .topic, .rule, .sun, .orbit-rings { opacity: 1 !important; }
       .brand, .hero-copy, .post-card, .reveal, .rule { transform: none !important; }
+      .morning-live { display: none !important; }
+      .morning-static { display: block !important; }
     </style>
   </noscript>
   <script type="module" src="{{ '/assets/js/site.js' | prepend: site.baseurl }}"></script>
