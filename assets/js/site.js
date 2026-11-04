@@ -25,11 +25,12 @@ function setupHeader() {
 
 function setupTopics() {
   const topics = document.querySelectorAll("button.topic");
+  const sun = document.querySelector(".sun");
   const cards = document.querySelectorAll(".post-card");
   const grid = document.querySelector(".post-grid");
   const live = document.querySelector(".topics-live");
   const empty = document.querySelector(".latest-none");
-  if (!topics.length) return;
+  if (!topics.length && !sun) return;
 
   const apply = (id) => {
     let shown = 0;
@@ -45,24 +46,41 @@ function setupTopics() {
     if (empty) empty.hidden = !id || shown > 0;
   };
 
+  const selectAll = () => {
+    topics.forEach((other) => {
+      other.setAttribute("aria-pressed", "false");
+      other.classList.remove("is-selected");
+    });
+    if (sun) {
+      sun.setAttribute("aria-pressed", "true");
+      sun.classList.add("is-all");
+    }
+    apply(null);
+    if (live) live.textContent = "Alle Beiträge";
+  };
+
+  const selectTopic = (topic) => {
+    topics.forEach((other) => {
+      other.setAttribute("aria-pressed", "false");
+      other.classList.remove("is-selected");
+    });
+    topic.setAttribute("aria-pressed", "true");
+    topic.classList.add("is-selected");
+    if (sun) {
+      sun.setAttribute("aria-pressed", "false");
+      sun.classList.remove("is-all");
+    }
+    apply(topic.getAttribute("data-topic"));
+    const label = topic.getAttribute("data-label") || "Thema";
+    if (live) live.textContent = label + " ausgewählt";
+  };
+
+  if (sun) sun.addEventListener("click", selectAll);
+
   topics.forEach((topic) => {
     topic.addEventListener("click", () => {
-      const id = topic.getAttribute("data-topic");
-      const selected = topic.getAttribute("aria-pressed") === "true";
-      topics.forEach((other) => {
-        other.setAttribute("aria-pressed", "false");
-        other.classList.remove("is-selected");
-      });
-      if (selected) {
-        apply(null);
-        if (live) live.textContent = "Alle Beiträge";
-        return;
-      }
-      topic.setAttribute("aria-pressed", "true");
-      topic.classList.add("is-selected");
-      apply(id);
-      const label = topic.getAttribute("data-label") || "Thema";
-      if (live) live.textContent = label + " ausgewählt";
+      if (topic.getAttribute("aria-pressed") === "true") selectAll();
+      else selectTopic(topic);
     });
   });
 }
@@ -96,17 +114,65 @@ async function boot() {
     );
   }
 
+  const sun = document.querySelector(".sun");
+  if (sun) {
+    animate(
+      sun,
+      { opacity: [0, 1], scale: [0.94, 1] },
+      { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+    );
+  }
+
+  const rings = document.querySelector(".orbit-rings");
+  if (rings) {
+    animate(rings, { opacity: [0, 1] }, { duration: 0.9, ease: "easeOut", delay: 0.04 });
+  }
+
   const bubbles = document.querySelectorAll(".topic, .topics-soon");
   if (bubbles.length) {
     animate(
       bubbles,
-      { opacity: [0, 1], y: [18, 0] },
-      { duration: 0.62, ease: [0.22, 1, 0.36, 1], delay: stagger(0.09, { startDelay: 0.05 }) }
+      { opacity: [0, 1], y: [12, 0] },
+      { duration: 0.62, ease: [0.22, 1, 0.36, 1], delay: stagger(0.08, { startDelay: 0.08 }) }
     );
   }
 
   const topicButtons = document.querySelectorAll("button.topic");
   const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (sun && canHover) {
+    hover(sun, (element) => {
+      const disc = element.querySelector(".sun-disc");
+      if (!disc) return;
+      disc.style.willChange = "transform";
+      animate(disc, { scale: 1.035 }, { type: "spring", bounce: 0.16, visualDuration: 0.34 });
+      return () => {
+        const leave = animate(disc, { scale: 1 }, { type: "spring", bounce: 0.1, visualDuration: 0.38 });
+        if (leave && typeof leave.then === "function") {
+          leave.then(() => {
+            disc.style.willChange = "auto";
+          });
+        }
+      };
+    });
+  }
+
+  if (sun) {
+    sun.addEventListener("click", () => {
+      const disc = sun.querySelector(".sun-disc");
+      if (!disc) return;
+      disc.style.willChange = "transform";
+      const pop = animate(
+        disc,
+        { scale: [1, 1.045, 1] },
+        { duration: 0.46, ease: [0.22, 1, 0.36, 1] }
+      );
+      if (pop && typeof pop.then === "function") {
+        pop.then(() => {
+          disc.style.willChange = "auto";
+        });
+      }
+    });
+  }
   if (topicButtons.length && canHover) {
     hover(topicButtons, (element) => {
       const bubble = element.querySelector(".bubble");
