@@ -20,7 +20,6 @@
   {%- assign variant = "topic-side" -%}
 {%- endif -%}
 <button type="button" class="topic {{ variant }} {% if active %}is-active{% else %}is-idle{% endif %}" data-topic="{{ topic.id }}" data-label="{{ topic.name | escape }}" aria-pressed="false" aria-controls="beitraege" style="--bob: {{ topic.bob }}; --bob-delay: {{ topic.delay }}">
-  {%- if topic.placement == "featured" -%}
   <span class="bubble">
     <span class="topic-icon" aria-hidden="true">
       {%- if topic.icon == "house" -%}{% include icons/house.svg %}
@@ -33,19 +32,5 @@
       {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
     </span>
   </span>
-  {%- else -%}
-  <span class="bubble">
-    <span class="topic-icon" aria-hidden="true">
-      {%- if topic.icon == "house" -%}{% include icons/house.svg %}
-      {%- elsif topic.icon == "car" -%}{% include icons/car.svg %}
-      {%- elsif topic.icon == "sun" -%}{% include icons/sun.svg %}
-      {%- elsif topic.icon == "brain" -%}{% include icons/brain.svg %}
-      {%- endif -%}
-    </span>
-  </span>
-  <span class="topic-label">
-    {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
-  </span>
-  {%- endif -%}
   <span class="sr-only">{% if active %}, mit Beiträgen{% else %}, noch ohne Beiträge{% endif %}</span>
 </button>
