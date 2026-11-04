@@ -28,9 +28,9 @@
       {%- elsif topic.icon == "brain" -%}{% include icons/brain.svg %}
       {%- endif -%}
     </span>
-    <span class="topic-label">
-      {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
-    </span>
+  </span>
+  <span class="topic-label">
+    {%- for line in topic.lines -%}{{ line }}{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}
   </span>
   <span class="sr-only">{% if active %}, mit Beiträgen{% else %}, noch ohne Beiträge{% endif %}</span>
 </button>

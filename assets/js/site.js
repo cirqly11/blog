@@ -14,7 +14,7 @@ function setupHeader() {
   let frame = 0;
   const update = () => {
     frame = 0;
-    header.classList.toggle("is-compact", window.scrollY > 28);
+    header.classList.toggle("is-compact", window.scrollY > 72);
   };
   update();
   window.addEventListener("scroll", () => {
@@ -94,14 +94,14 @@ async function boot() {
     return;
   }
 
-  const { animate, stagger, inView, hover, scroll } = motion;
+  const { animate, stagger, inView, scroll } = motion;
 
   const brand = document.querySelector(".brand");
   if (brand) {
     animate(
       brand,
-      { opacity: [0, 1], transform: ["translateY(14px)", "none"] },
-      { duration: 0.55, ease: "easeOut" }
+      { opacity: [0, 1], y: [10, 0] },
+      { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
     );
   }
 
@@ -110,7 +110,7 @@ async function boot() {
     animate(
       rules,
       { transform: ["scaleX(0)", "scaleX(1)"] },
-      { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.12 }
+      { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.08 }
     );
   }
 
@@ -118,105 +118,31 @@ async function boot() {
   if (sun) {
     animate(
       sun,
-      { opacity: [0, 1], scale: [0.94, 1] },
-      { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+      { opacity: [0, 1], scale: [0.97, 1] },
+      { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
     );
   }
 
   const rings = document.querySelector(".orbit-rings");
   if (rings) {
-    animate(rings, { opacity: [0, 1] }, { duration: 0.9, ease: "easeOut", delay: 0.04 });
+    animate(rings, { opacity: [0, 1] }, { duration: 0.8, ease: "easeOut" });
   }
 
-  const bubbles = document.querySelectorAll(".topic, .topics-soon");
+  const bubbles = document.querySelectorAll(".topic");
   if (bubbles.length) {
     animate(
       bubbles,
-      { opacity: [0, 1], y: [12, 0] },
-      { duration: 0.62, ease: [0.22, 1, 0.36, 1], delay: stagger(0.08, { startDelay: 0.08 }) }
+      { opacity: [0, 1], y: [8, 0] },
+      { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: stagger(0.06, { startDelay: 0.06 }) }
     );
-  }
-
-  const topicButtons = document.querySelectorAll("button.topic");
-  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if (sun && canHover) {
-    hover(sun, (element) => {
-      const disc = element.querySelector(".sun-disc");
-      if (!disc) return;
-      disc.style.willChange = "transform";
-      animate(disc, { scale: 1.035 }, { type: "spring", bounce: 0.16, visualDuration: 0.34 });
-      return () => {
-        const leave = animate(disc, { scale: 1 }, { type: "spring", bounce: 0.1, visualDuration: 0.38 });
-        if (leave && typeof leave.then === "function") {
-          leave.then(() => {
-            disc.style.willChange = "auto";
-          });
-        }
-      };
-    });
-  }
-
-  if (sun) {
-    sun.addEventListener("click", () => {
-      const disc = sun.querySelector(".sun-disc");
-      if (!disc) return;
-      disc.style.willChange = "transform";
-      const pop = animate(
-        disc,
-        { scale: [1, 1.045, 1] },
-        { duration: 0.46, ease: [0.22, 1, 0.36, 1] }
-      );
-      if (pop && typeof pop.then === "function") {
-        pop.then(() => {
-          disc.style.willChange = "auto";
-        });
-      }
-    });
-  }
-  if (topicButtons.length && canHover) {
-    hover(topicButtons, (element) => {
-      const bubble = element.querySelector(".bubble");
-      if (!bubble) return;
-      bubble.style.willChange = "transform";
-      animate(bubble, { scale: 1.07 }, { type: "spring", bounce: 0.2, visualDuration: 0.32 });
-      return () => {
-        const leave = animate(bubble, { scale: 1 }, { type: "spring", bounce: 0.12, visualDuration: 0.36 });
-        if (leave && typeof leave.then === "function") {
-          leave.then(() => {
-            bubble.style.willChange = "auto";
-          });
-        }
-      };
-    });
-  }
-
-  if (topicButtons.length) {
-    topicButtons.forEach((topic) => {
-      topic.addEventListener("click", () => {
-        if (!topic.classList.contains("is-selected")) return;
-        const bubble = topic.querySelector(".bubble");
-        if (!bubble) return;
-        bubble.style.willChange = "transform";
-        const pop = animate(
-          bubble,
-          { scale: [1, 1.08, 1] },
-          { duration: 0.46, ease: [0.22, 1, 0.36, 1] }
-        );
-        if (pop && typeof pop.then === "function") {
-          pop.then(() => {
-            bubble.style.willChange = "auto";
-          });
-        }
-      });
-    });
   }
 
   const cards = document.querySelectorAll(".post-card");
   if (cards.length) {
     const entrance = animate(
       cards,
-      { opacity: [0, 1], y: [16, 0] },
-      { duration: 0.48, ease: "easeOut", delay: stagger(0.08, { startDelay: 0.16 }) }
+      { opacity: [0, 1], y: [10, 0] },
+      { duration: 0.45, ease: "easeOut", delay: stagger(0.06, { startDelay: 0.12 }) }
     );
     if (entrance && typeof entrance.then === "function") {
       entrance.then(() => {
@@ -225,7 +151,6 @@ async function boot() {
         });
       });
     }
-
   }
 
   const reveals = [...document.querySelectorAll(".reveal")];
@@ -236,27 +161,17 @@ async function boot() {
         const index = reveals.indexOf(element);
         animate(
           element,
-          { opacity: [0, 1], transform: ["translateY(16px)", "none"] },
+          { opacity: [0, 1], y: [12, 0] },
           {
-            duration: 0.55,
+            duration: 0.5,
             ease: [0.22, 1, 0.36, 1],
-            delay: Math.min(index * 0.06, 0.2),
+            delay: Math.min(index * 0.05, 0.16),
           }
         );
       },
       { margin: "0px 0px -8% 0px" }
     );
   }
-
-  hover("nav a", (element) => {
-    const line = element.querySelector(".nav-line");
-    if (!line) return;
-    animate(line, { transform: "scaleX(1)" }, { duration: 0.22, ease: "easeOut" });
-    return () => {
-      if (element.getAttribute("aria-current") === "page") return;
-      animate(line, { transform: "scaleX(0)" }, { duration: 0.18, ease: "easeIn" });
-    };
-  });
 
   const bar = document.querySelector(".read-progress");
   const article = document.querySelector(".post");
